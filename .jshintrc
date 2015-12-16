@@ -1,0 +1,14 @@
+{
+  "node": true,
+  "undef": true,
+  "unused": true,
+  "esnext": true,
+  "globals": {
+    "describe": false,
+    "it": false,
+    "before": false,
+    "after": false,
+    "afterEach": false,
+    "beforeEach": false
+  }
+}

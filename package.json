@@ -1,0 +1,48 @@
+{
+  "name": "unoconv-worker",
+  "version": "0.1.0",
+  "description": "A docker image containing a very simple REST service for document conversion using unoconv.",
+  "main": "server.js",
+  "scripts": {
+    "start": "make start",
+    "test": "make test"
+  },
+  "engines": {
+    "node": ">=0.12"
+  },
+  "engineStrict": true,
+  "dependencies": {
+    "cors": "^2.7.1",
+    "express": "^4.13.3",
+    "mime-types": "^2.1.7",
+    "node-uuid": "^1.4.7",
+    "stream-combiner": "^0.2.2",
+    "through2": "^2.0.0"
+  },
+  "devDependencies": {
+    "api-benchmark": "^0.2.5",
+    "coveralls": "^2.11.4",
+    "istanbul": "^0.4.1",
+    "jscs": "^1.13.1",
+    "jshint": "^2.8.0",
+    "mocha": "^2.3.4",
+    "request": "^2.67.0",
+    "should": "^7.1.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flux-s/unoconv-worker.git"
+  },
+  "keywords": [
+    "unoconv",
+    "libreoffice",
+    "conversion",
+    "rest"
+  ],
+  "author": "Alban Mouton <alban.mouton@gmail.com>",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/flux-s/unoconv-worker/issues"
+  },
+  "homepage": "https://github.com/flux-s/unoconv-worker#readme"
+}

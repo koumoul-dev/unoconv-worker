@@ -1,0 +1,12 @@
+node_modules
+*.log
+npm-debug.log.*
+.git
+Dockerfile
+.dockerignore
+.gitignore
+.jscsrc
+.jshintrc
+test
+trusted-dockerfile-*
+coverage

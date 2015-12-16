@@ -1,0 +1,27 @@
+env:
+  global:
+    # DOCKERHUB_TRIGGER_TOKEN to trigger a build on dockerhub
+    secure: "BnPaCmNmktz9Ey1hxABYTsTUnythDJwT+I1Hsm8oPdSkKquPWZGRsriLpPczIiEQ/H9hlGpBeTDRs6I6E2lTTkiG0aCjKy3H3udCoP7e787+p6Ti4Z/xJ4cPyHAjXanBhdLK76PvMTaJwFqAcLO/GjEglUcFIYscjx55SuXDk24jP7R7nOe6pUUamLirXYL3furtPv3JYw55H/rvLrozhWj5HKUnpRxv5gZpGkrsJYO3fJKh32YpzSK7PkS8A5l855DNRfEuGXrIb44gr5lm3vwNhhmU/83xgPsp9obGtS9ldxmewBPN5BTcNZHW63fO+XMetMzr9g399AjubH8Md9wx3gdWZHIiaDFPeVvwfeB4zQ3s8VwyfMyZSrNl0bwsRRDCng9T7n8qPgbA7ExulhXZZGDVMBmdj2w25n3T0Fj18M7jDVe5TRurm/iJlOHdjAA/VCao9IvXRuETbqa6hYYC9BFDoeUqFcF2p3cysHEFUj4WcOHVI7Iu9BfuiqjxLzjJzCJTlKKmwad3MVZQ1xErAAdE765Ec1asraghJuQArtZC/yYk0ANari/VuGCkb7DE6UhgIjjlFopr3w/fHNTmCGnGBN/dvRc3LcbdQysrinw37qyk50WHe0dSUur1CYnvtmyoiDB0f6lch4kCOri9AS+3gkNGcM8ZoApGgdU="
+
+branches:
+  only:
+    - master
+
+language: node_js
+node_js:
+  - '4'
+
+sudo: required
+services:
+  - docker
+
+install:
+  - npm install
+  - make build
+
+script:
+  - make lint
+  - make test
+
+after_success:
+  - curl -XPOST https://registry.hub.docker.com/u/fluxs/unoconv-worker/trigger/"$DOCKERHUB_TRIGGER_TOKEN"/
