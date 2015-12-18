@@ -72,6 +72,7 @@ function doJob(job) {
     shiftJob();
   });
   child.stderr.on('data', function(data) {
+    console.warn('Unoconv converter received message on stderr', data);
     var dataStr = data.toString();
     // An error is often reported by unoconv about empty document
     if (!dataStr.match(emptyDocRegxp)) {
