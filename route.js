@@ -38,14 +38,23 @@ function pushJob(job) {
   }
 }
 
-function shiftJob() {
-  var job = queue.shift();
-  if (job) {
-    doJob(job);
+function finishJob(job, err) {
+  if (!job.isOver) {
+    active = false;
+    job.isOver = true;
+    job.next(err);
+
+    console.log('Unoconv converter delete temp file ' + job.tempPath);
+    fs.unlink(job.tempPath, function(err) {
+      if (err) console.error('Unoconv converter failed to remove temp file', err.stack);
+    });
+
+    var newJob = queue.shift();
+    if (newJob) {
+      doJob(newJob);
+    }
   }
 }
-
-var emptyDocRegxp = /Document is empty/;
 
 function doJob(job) {
   console.log('Unoconv converter process a job from the queue', {
@@ -60,24 +69,21 @@ function doJob(job) {
     '--format', job.outputExtension,
     job.tempPath
   ]);
-  child.stdout.pipe(job.res);
-  child.stdout.on('end', function() {
-    console.log('Unoconv converter delete temp file ' + job.tempPath);
-    fs.unlink(job.tempPath, function(err) {
-      if (err) console.error('Unoconv converter failed to remove temp file', err.stack);
-    });
 
-    // Do we really always pass here when job is over ?
-    active = false;
-    shiftJob();
+  child.on('error', function(err) {
+    console.warn('Unoconv spawn child failed', err);
+    finishJob(job, err);
   });
+
+  child.on('exit', function(code) {
+    console.log('Unoconv spawn child exited with code', code);
+    finishJob(job);
+  });
+
+  child.stdout.pipe(job.res);
+
   child.stderr.on('data', function(data) {
-    console.warn('Unoconv converter received message on stderr', data);
-    var dataStr = data.toString();
-    // An error is often reported by unoconv about empty document
-    if (!dataStr.match(emptyDocRegxp)) {
-      job.next(new Error(dataStr));
-    }
+    console.warn('Unoconv converter received message on stderr', data.toString);
   });
 }
 
@@ -98,11 +104,13 @@ function convertDocument(req, res, next) {
   });
 
   writeStream.on('finish', function() {
+    console.log('Unoconv converter temp file created ' + tempPath);
     pushJob({
       res: res,
       next: next,
       outputExtension: outputExtension,
-      tempPath: tempPath
+      tempPath: tempPath,
+      isOver: false
     });
   });
 }
