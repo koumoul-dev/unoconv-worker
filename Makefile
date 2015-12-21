@@ -1,7 +1,7 @@
 .PHONY: build start start-detached stop-detached test lint check-coverage
 
 build:
-	docker build --pull -t unoconv-worker-dev .
+	docker build -t unoconv-worker-dev .
 
 start: build
 	docker run -p 3121:3121 -it --rm --name unoconv-worker-dev unoconv-worker-dev

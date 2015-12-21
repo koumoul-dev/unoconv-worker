@@ -15,14 +15,10 @@
     "cors": "^2.7.1",
     "express": "^4.13.3",
     "mime-types": "^2.1.7",
-    "node-uuid": "^1.4.7",
-    "stream-combiner": "^0.2.2",
-    "through2": "^2.0.0"
+    "node-uuid": "^1.4.7"
   },
   "devDependencies": {
     "api-benchmark": "^0.2.5",
-    "coveralls": "^2.11.4",
-    "istanbul": "^0.4.1",
     "jscs": "^1.13.1",
     "jshint": "^2.8.0",
     "mocha": "^2.3.4",
